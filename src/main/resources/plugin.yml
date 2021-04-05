@@ -1,0 +1,6 @@
+name: BackPacks
+version: ${project.version}
+main: de.fredie1104.projects.backpacks.BackPacks
+api-version: 1.16
+authors: [ fredie1104 ]
+description: A plugins that help you to open a shulkerchest by just right clicking in the air or via command
