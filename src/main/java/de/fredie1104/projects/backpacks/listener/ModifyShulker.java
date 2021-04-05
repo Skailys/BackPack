@@ -1,7 +1,6 @@
 package de.fredie1104.projects.backpacks.listener;
 
 
-import de.fredie1104.projects.backpacks.BackPacks;
 import de.fredie1104.projects.backpacks.filtering.Filtering;
 import de.fredie1104.projects.backpacks.qnd.Qnd;
 import org.bukkit.Bukkit;
@@ -24,7 +23,7 @@ import java.util.Set;
 public class ModifyShulker implements Listener {
     final int OFF_HAND_SLOT = 45;
 
-    Set openedShulkers = new HashSet<Player>();
+    Set<Player> openedShulkers = new HashSet<>();
     Filtering forbidden = new Filtering();
 
     private void filteringInventory(Inventory inventory, Player player) {
@@ -43,7 +42,7 @@ public class ModifyShulker implements Listener {
             }
 
             inventory.remove(item);
-            Map _dropable = playerInventory.addItem(item);
+            Map<Integer, ItemStack> _dropable = playerInventory.addItem(item);
 
             for (Object itemStack : _dropable.values()) {
                 player.getWorld().dropItem(player.getLocation().add(0, 0.5, 0), (ItemStack) itemStack);
@@ -64,6 +63,10 @@ public class ModifyShulker implements Listener {
         }
 
         ItemStack item = e.getItem();
+        if (item == null) {
+            return;
+        }
+
         if (!(item.getItemMeta() instanceof BlockStateMeta)) {
             return;
         }
@@ -106,6 +109,10 @@ public class ModifyShulker implements Listener {
 
         ItemStack origin = (mainHand) ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
         BlockStateMeta bsm = (BlockStateMeta) origin.getItemMeta();
+        if (bsm == null) {
+            return;
+        }
+
         ShulkerBox box = (ShulkerBox) bsm.getBlockState();
 
         Inventory eventInventory = e.getInventory();
