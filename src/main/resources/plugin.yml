@@ -3,4 +3,15 @@ version: ${project.version}
 main: de.fredie1104.projects.backpacks.BackPacks
 api-version: 1.16
 authors: [ fredie1104 ]
-description: A plugins that help you to open a shulkerchest by just right clicking in the air or via command
+description: Backpack is a spigot plugin to open shulker like normal backpack
+prefix: BackPack
+load: POSTWORLD
+
+permissions:
+  backpack.using.bypassFiltering:
+    description: Allows you to bypass the filtering of deployed items in backpack
+    default: false
+  backpack.using.bypassForceFilter:
+    description: Allows you to disable the force filtering after InventoryClickEvent and InventoryCloseEvent
+    default: false
+
