@@ -6,12 +6,12 @@
 
     <groupId>de.fredie1104.projects</groupId>
     <artifactId>BackPacks</artifactId>
-    <version>v0.2-alpha</version>
+    <version>v0.2.3-alpha</version>
     <packaging>jar</packaging>
 
     <name>BackPacks</name>
 
-    <description>A plugins that help you to open a shulkerchest by just right clicking in the air or via command
+    <description>Backpack is a spigot plugin to open shulker like normal backpack
     </description>
     <properties>
         <java.version>1.8</java.version>
