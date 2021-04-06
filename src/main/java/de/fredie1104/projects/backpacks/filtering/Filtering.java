@@ -1,3 +1,21 @@
+/*
+    BackPack - Spigot based plugin to use a shulker like a backpacks
+    Copyright (C) 2021  fredie04
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 package de.fredie1104.projects.backpacks.filtering;
 
 import de.fredie1104.projects.backpacks.BackPacks;
@@ -13,7 +31,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 public class Filtering {
-    Set cache = new HashSet<Material>();
+    Set<Material> cache = new HashSet<>();
 
     public Filtering() {
         Logger log = BackPacks.getPlugin().getLogger();
@@ -48,6 +66,6 @@ public class Filtering {
         if (player.hasPermission("backpacks.using.bypassFiltering")) {
             return false;
         }
-        return (itemStack == null) ? false : cache.contains(itemStack.getType());
+        return itemStack != null && cache.contains(itemStack.getType());
     }
 }

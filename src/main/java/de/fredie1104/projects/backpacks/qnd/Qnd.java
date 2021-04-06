@@ -1,3 +1,21 @@
+/*
+    BackPack - Spigot based plugin to use a shulker like a backpacks
+    Copyright (C) 2021  fredie04
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 package de.fredie1104.projects.backpacks.qnd;
 
 import org.bukkit.block.ShulkerBox;
@@ -35,21 +53,16 @@ public class Qnd {
         }
 
         BlockStateMeta im = (BlockStateMeta) item.getItemMeta();
-        if (!(im.getBlockState() instanceof ShulkerBox)) {
-            return false;
-        }
-
-        return true;
+        return im.getBlockState() instanceof ShulkerBox;
     }
 
     public static boolean isInRange(Set<Integer> rawSlots, Integer includedMin, Integer includedMax) {
-        boolean contains = false;
         for (Integer rawSlot : rawSlots) {
             if (includedMin <= rawSlot && rawSlot <= includedMax) {
-                contains = true;
+                return true;
             }
         }
-        return contains;
+        return false;
     }
 
     public static boolean isClone(InventoryAction inventoryAction) {
