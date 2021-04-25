@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.qnd;
+package de.fredie1104.projects.backpacks.utils;
 
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.event.inventory.InventoryAction;
@@ -26,24 +26,24 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import java.util.Arrays;
 import java.util.Set;
 
-//Qnd stands for "quick and dirty", here are function which don't pass the other classes
-public class Qnd {
+//Groups stands for "quick and dirty", here are function which don't pass the other classes
+public class Groups {
 
-    private static InventoryAction[] placeActions =
+    private static final InventoryAction[] placeActions =
             {InventoryAction.PLACE_ONE, InventoryAction.PLACE_SOME, InventoryAction.PLACE_ALL};
-    private static InventoryAction[] pickupActions =
+    private static final InventoryAction[] pickupActions =
             {InventoryAction.PICKUP_ONE, InventoryAction.PICKUP_SOME,
                     InventoryAction.PICKUP_HALF, InventoryAction.PICKUP_ALL};
-    private static InventoryAction[] dropActions =
+    private static final InventoryAction[] dropActions =
             {InventoryAction.DROP_ONE_CURSOR, InventoryAction.DROP_ALL_CURSOR,
                     InventoryAction.DROP_ONE_SLOT, InventoryAction.DROP_ALL_SLOT};
-    private static InventoryAction[] moveActions =
+    private static final InventoryAction[] moveActions =
             {InventoryAction.MOVE_TO_OTHER_INVENTORY, InventoryAction.HOTBAR_MOVE_AND_READD};
-    private static InventoryAction[] collectActions =
+    private static final InventoryAction[] collectActions =
             {InventoryAction.COLLECT_TO_CURSOR};
-    private static InventoryAction[] swapActions =
+    private static final InventoryAction[] swapActions =
             {InventoryAction.HOTBAR_SWAP, InventoryAction.SWAP_WITH_CURSOR};
-    private static InventoryAction[] cloneActions =
+    private static final InventoryAction[] cloneActions =
             {InventoryAction.CLONE_STACK};
 
 

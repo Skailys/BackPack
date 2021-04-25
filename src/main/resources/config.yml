@@ -1,0 +1,40 @@
+backpack:
+  perm:
+    bypassForceFilter: "backpack.using.bypassForceFiltering"
+    bypassFitlering: "backpack.using.bypassForceFiltering"
+  name:
+    shulker:
+      default: "Shulker box"
+  items:
+    forbidden:
+      material:
+        - "shulker_box"
+        - "white_shulker_box"
+        - "orange_shulker_box"
+        - "magenta_shulker_box"
+        - "light_blue_shulker_box"
+        - "yellow_shulker_box"
+        - "lime_shulker_box"
+        - "pink_shulker_box"
+        - "gray_shulker_box"
+        - "light_gray_shulker_box"
+        - "cyan_shulker_box"
+        - "purple_shulker_box"
+        - "blue_shulker_box"
+        - "brown_shulker_box"
+        - "green_shulker_box"
+        - "red_shulker_box"
+        - "black_shulker_box"
+  info:
+    finishedInit: "Backpack (v0.2.3) initializing finished"
+  warn:
+    notFound:
+      byMaterial: "Could not parse \"%s\" to material"
+  watchdog:
+    tps: 17.5
+    sleeping: 2400
+    startup: "Plugin is now usable"
+    shutdown:
+      console: "Plugin was disable because the server tps is too low"
+      player: "Backpacks are currently not available"
+

@@ -3,7 +3,7 @@ version: ${project.version}
 main: de.fredie1104.projects.backpacks.BackPacks
 api-version: 1.16
 authors: [ fredie1104 ]
-description: Backpack is a spigot plugin to open shulker like normal backpack
+description: BackPacks is a spigot plugin to open shulker like normal backpack
 prefix: BackPack
 load: POSTWORLD
 

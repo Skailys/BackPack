@@ -18,25 +18,36 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package de.fredie1104.projects.backpacks;
 
-import de.fredie1104.projects.backpacks.listener.ModifyShulker;
-import org.bukkit.plugin.PluginManager;
+import de.fredie1104.projects.backpacks.config.ConfigManager;
+import de.fredie1104.projects.backpacks.watchdog.Watchdog;
+import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
 
 public final class BackPacks extends JavaPlugin {
 
-    private static BackPacks plugin;
+    private static final long DELAY = 0;
+    @Getter
+    private static BackPacks instance;
+    @Getter
+    private static BukkitScheduler scheduler;
+    private static Watchdog watchdog;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        plugin = this;
+        instance = this;
+        initConfigManager();
 
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new ModifyShulker(), this);
+        scheduler = Bukkit.getScheduler();
+        watchdog = new Watchdog();
+        scheduler.runTask(instance, () -> watchdog.run());
+        instance.getLogger().info(ConfigManager.getString("backpack.info.finishedInit"));
 
-        plugin.getLogger().info(plugin.getName()
-                + " (v0.2.2-alpha) initializing finished. Read more at github.com/fredie04/<project>/wiki");
+        long sleeping = (int) ConfigManager.get("backpack.watchdog.sleeping");
+        scheduler.runTaskTimer(instance, () -> watchdog.run(), DELAY, sleeping);
     }
 
     @Override
@@ -44,7 +55,8 @@ public final class BackPacks extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public static BackPacks getPlugin() {
-        return plugin;
+    private void initConfigManager() {
+        this.saveDefaultConfig();
+        new ConfigManager(this);
     }
 }

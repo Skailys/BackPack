@@ -19,8 +19,11 @@
 package de.fredie1104.projects.backpacks.listener;
 
 
-import de.fredie1104.projects.backpacks.filtering.Filtering;
-import de.fredie1104.projects.backpacks.qnd.Qnd;
+import de.fredie1104.projects.backpacks.BackPacks;
+import de.fredie1104.projects.backpacks.config.ConfigManager;
+import de.fredie1104.projects.backpacks.utils.Filtering;
+import de.fredie1104.projects.backpacks.utils.Groups;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -38,17 +41,19 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-private final static int OFF_HAND_SLOT = 45;
+import java.util.logging.Logger;
 
 public class ModifyShulker implements Listener {
-    
 
-    Set<Player> openedShulkers = new HashSet<>();
-    Filtering forbidden = new Filtering();
+    private final static int OFF_HAND_SLOT = 45;
+    @Getter
+    private static final Set<Player> openedShulkers = new HashSet<>();
+    private static final Filtering forbidden = new Filtering();
+    Logger log = BackPacks.getInstance().getLogger();
 
     private void filteringInventory(Inventory inventory, Player player) {
-        if (player.hasPermission("backpacks.using.bypassForceFilter")) {
+
+        if (player.hasPermission(ConfigManager.getString("backpack.perm.bypassForceFilter"))) {
             return;
         }
 
@@ -65,8 +70,8 @@ public class ModifyShulker implements Listener {
             inventory.remove(item);
             Map<Integer, ItemStack> _dropable = playerInventory.addItem(item);
 
-            for (Object itemStack : _dropable.values()) {
-                player.getWorld().dropItem(player.getLocation().add(0, 0.5, 0), (ItemStack) itemStack);
+            for (ItemStack itemStack : _dropable.values()) {
+                player.getWorld().dropItem(player.getLocation().add(0, 0.5, 0), itemStack);
             }
         }
     }
@@ -98,7 +103,8 @@ public class ModifyShulker implements Listener {
         }
 
         String localizedName = im.getLocalizedName();
-        String fallbackName = (localizedName.isEmpty()) ? "Shulker box" : localizedName;
+        String defaultName = ConfigManager.getString("backpack.name.shulker.default");
+        String fallbackName = (localizedName.isEmpty()) ? defaultName : localizedName;
 
         String displayName = im.getDisplayName();
         String backpackName = (displayName.isEmpty()) ? fallbackName : displayName;
@@ -121,8 +127,8 @@ public class ModifyShulker implements Listener {
         openedShulkers.remove(p);
 
         PlayerInventory inv = p.getInventory();
-        boolean offHand = Qnd.isShulker(inv.getItemInOffHand());
-        boolean mainHand = Qnd.isShulker(inv.getItemInMainHand());
+        boolean offHand = Groups.isShulker(inv.getItemInOffHand());
+        boolean mainHand = Groups.isShulker(inv.getItemInMainHand());
 
         if (!offHand && !mainHand) {
             return;
@@ -146,7 +152,6 @@ public class ModifyShulker implements Listener {
 
         int slot = (mainHand) ? p.getInventory().getHeldItemSlot() : OFF_HAND_SLOT;
         origin.setItemMeta(bsm);
-        p.getInventory().remove(origin);
         p.getInventory().setItem(slot, origin);
     }
 
@@ -166,13 +171,13 @@ public class ModifyShulker implements Listener {
         PlayerInventory playerInventory = p.getInventory();
         InventoryAction inventoryAction = e.getAction();
         boolean isBackpack = clickedInv.getType() == InventoryType.CHEST;
-        boolean isMainHand = Qnd.isShulker(playerInventory.getItemInMainHand());
+        boolean isMainHand = Groups.isShulker(playerInventory.getItemInMainHand());
         boolean eventSlotEqualHand = e.getSlot() == playerInventory.getHeldItemSlot();
 
         ItemStack currentItem = e.getCurrentItem();
         ItemStack cursor = e.getCursor();
 
-        if (Qnd.isPlace(inventoryAction) && isBackpack) {
+        if (Groups.isPlace(inventoryAction) && isBackpack) {
             if (forbidden.disallowed(cursor, p)) {
                 e.setCancelled(true);
                 return;
@@ -186,7 +191,7 @@ public class ModifyShulker implements Listener {
             }
         }
 
-        if (Qnd.isPickup(inventoryAction) && isBackpack) {
+        if (Groups.isPickup(inventoryAction) && isBackpack) {
             if (forbidden.disallowed(currentItem, p)) {
                 e.setCancelled(true);
                 //return;
@@ -204,7 +209,7 @@ public class ModifyShulker implements Listener {
                     return;
                 }
 
-                boolean modifyShulkerSlot = Qnd.isShulker(hotbarItem) && isMainHand;
+                boolean modifyShulkerSlot = Groups.isShulker(hotbarItem) && isMainHand;
                 boolean isIllegalMove = forbidden.disallowed(hotbarItem, p) && !isSwap;
 
                 if (!modifyShulkerSlot && !isIllegalMove) {
@@ -253,7 +258,7 @@ public class ModifyShulker implements Listener {
         }
 
         ItemStack oldCursor = e.getOldCursor();
-        boolean isBackpack = Qnd.isInRange(e.getRawSlots(), 0, 26);
+        boolean isBackpack = Groups.isInRange(e.getRawSlots(), 0, 26);
 
         if (!(forbidden.disallowed(oldCursor, p) && isBackpack)) {
             return;
