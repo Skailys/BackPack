@@ -1,5 +1,5 @@
 # BackPack
-[![Java CI with Maven](https://github.com/fredie04/BackPack/actions/workflows/maven.yml/badge.svg)](https://github.com/fredie04/BackPack/actions/workflows/maven.yml)
+[![Java CI with Maven](https://github.com/fredie04/BackPack/actions/workflows/maven.yml/badge.svg)](https://github.com/fredie04/BackPack/actions/workflows/maven.yml) [![CodeQL](https://github.com/fredie04/BackPack/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/fredie04/BackPack/actions/workflows/codeql-analysis.yml)
 ## Introduction
 Backpack is a spigot plugin to open shulker like normal backpack. Just right click the air with a shulker in the hand, and you can interact like a placed shulker chest. It's also provides few security function which are free configurationable.
 

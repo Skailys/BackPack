@@ -39,8 +39,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+private final static int OFF_HAND_SLOT = 45;
+
 public class ModifyShulker implements Listener {
-    final int OFF_HAND_SLOT = 45;
+    
 
     Set<Player> openedShulkers = new HashSet<>();
     Filtering forbidden = new Filtering();
