@@ -7,7 +7,7 @@ Backpack is a spigot plugin to open shulker like normal backpack. Just right cli
 Take a shulker chest and right click in the middle of the air. It's opens the shulker as an inventory which is interactable. By closing the inventory the content getting safed. A direct saving isn't provided yet.
 
 ## Building/Installing
-Build the project with Maven and move it into the plugin folder. The filter file must be saved in the data folder as "filter.csv".
+Build the project with Maven and move it into the plugin folder. The config.yml contains various settings options like the filter, messages or permissions.
 
 ## Futures
 * Realtime interaction with shulker inventory
@@ -18,8 +18,3 @@ Build the project with Maven and move it into the plugin folder. The filter file
 ## Permissions
 * `backpacks.using.bypassFiltering` if true, it will bypass the direct filter option
 * `backpacks.using.bypassForceFilter` if true, it will don't check the shulker for illegal items
-
-## Filter list (BackPack/filter.csv)
-* The filter list stored at the data folder of the plugin under filter.csv
-  * The entry are structured as follows: `<material>,<name>`, e.g. `material,shulker_box`
-  * If no filter list exist it will throw a warning, you can still use plugin normally
