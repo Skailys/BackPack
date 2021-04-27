@@ -13,7 +13,7 @@ public class ConfigManager {
     private static final String RESOURCE_NOT_FOUND = "Unable to load %s it will be initialize with a default (%s)";
 
     private static BackPacks instance;
-    private static final Logger log = instance.getLogger();
+    private static final Logger log = BackPacks.getInstance().getLogger();
     @Getter
     private static FileConfiguration config;
 
