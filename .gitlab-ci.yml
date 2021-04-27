@@ -13,5 +13,5 @@ build:
     - mvn clean package
   artifacts:
     paths:
-      - target/backpack-*.jar
+      - target/BackPacks-*.jar
 
