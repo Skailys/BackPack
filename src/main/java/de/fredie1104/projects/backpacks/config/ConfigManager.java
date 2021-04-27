@@ -6,10 +6,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class ConfigManager {
 
+    private static final String RESOURCE_NOT_FOUND = "Unable to load %s it will be initialize with a default (%s)";
+
     private static BackPacks instance;
+    private static final Logger log = instance.getLogger();
     @Getter
     private static FileConfiguration config;
 
@@ -50,6 +54,9 @@ public class ConfigManager {
     }
 
     private void setDefaultValue(String path, Object value) {
-        if (!config.contains(path)) config.set(path, value);
+        if (config.contains(path)) return;
+
+        config.set(path, value);
+        log.warning(String.format(RESOURCE_NOT_FOUND, path, value));
     }
 }
