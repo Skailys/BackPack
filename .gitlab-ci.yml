@@ -1,0 +1,17 @@
+stages:
+  - "build"
+
+build:
+  stage: build
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  cache:
+    paths:
+      - ./.m2/repository/
+  image: local-gitlab-jdk15-maven:latest
+  script:
+    - mvn clean package
+  artifacts:
+    paths:
+      - target/BackPacks-*.jar
+
