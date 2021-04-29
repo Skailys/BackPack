@@ -19,7 +19,6 @@
 package de.fredie1104.projects.backpacks.listener;
 
 
-import de.fredie1104.projects.backpacks.BackPacks;
 import de.fredie1104.projects.backpacks.config.ConfigManager;
 import de.fredie1104.projects.backpacks.utils.Filtering;
 import de.fredie1104.projects.backpacks.utils.Groups;
@@ -41,7 +40,6 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class ModifyShulker implements Listener {
 
@@ -49,11 +47,14 @@ public class ModifyShulker implements Listener {
     @Getter
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final Filtering forbidden = new Filtering();
-    Logger log = BackPacks.getInstance().getLogger();
 
     private void filteringInventory(Inventory inventory, Player player) {
 
-        if (player.hasPermission(ConfigManager.getString("backpack.perm.bypassForceFilter"))) {
+        if ((boolean) ConfigManager.get("backpack.bypass.deactivateForceFilter")) {
+            return;
+        }
+
+        if (ConfigManager.getRequiredGameModes().contains(player.getGameMode()) && player.hasPermission(ConfigManager.getString("backpack.perm.bypassForceFilter"))) {
             return;
         }
 

@@ -39,7 +39,7 @@ public class Filtering {
     }
 
     public boolean disallowed(ItemStack itemStack, Player player) {
-        if (player.hasPermission(ConfigManager.getString("backpack.perm.bypassFiltering"))) {
+        if (ConfigManager.getRequiredGameModes().contains(player.getGameMode()) && player.hasPermission(ConfigManager.getString("backpack.perm.bypassFiltering"))) {
             return false;
         }
         return itemStack != null && cache.contains(itemStack.getType());

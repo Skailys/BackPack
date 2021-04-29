@@ -2,6 +2,10 @@ backpack:
   perm:
     bypassForceFilter: "backpack.using.bypassForceFiltering"
     bypassFitlering: "backpack.using.bypassForceFiltering"
+  bypass:
+    requiredGameMode:
+      - "CREATIVE"
+    deactivateForceFilter: true
   name:
     shulker:
       default: "Shulker box"

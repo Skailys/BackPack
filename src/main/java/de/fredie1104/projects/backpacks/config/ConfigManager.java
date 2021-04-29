@@ -2,29 +2,51 @@ package de.fredie1104.projects.backpacks.config;
 
 import de.fredie1104.projects.backpacks.BackPacks;
 import lombok.Getter;
+import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class ConfigManager {
 
     private static final String RESOURCE_NOT_FOUND = "Unable to load %s it will be initialize with a default (%s)";
+    private static final String RESOURCE_NOT_PARSED = "Unable to parse %s as %s it will be ignored";
 
     private static BackPacks instance;
     private static final Logger log = BackPacks.getInstance().getLogger();
     @Getter
     private static FileConfiguration config;
+    @Getter
+    private static ArrayList<GameMode> requiredGameModes;
 
     public ConfigManager(BackPacks backPack) {
         instance = backPack;
         config = instance.getConfig();
+        requiredGameModes = getGamesModes("backpack.bypass.requiredGameMode");
         initValues();
     }
 
+    public static ArrayList<GameMode> getGamesModes(String path) {
+        ArrayList<String> raw = (ArrayList<String>) config.get(path);
+        ArrayList<GameMode> cache = new ArrayList<>();
+
+        for (String s : raw) {
+            try {
+                cache.add(GameMode.valueOf(s));
+            } catch (Exception e) {
+                String warn = String.format(RESOURCE_NOT_PARSED, s, GameMode.class);
+                log.warning(warn);
+            }
+        }
+
+        return cache;
+    }
+
     public static List<String> getStringList(String path) {
-        return (List<String>) config.getList(path);
+        return (ArrayList<String>) config.getList(path);
     }
 
     public static String getString(String path) {
@@ -42,6 +64,8 @@ public class ConfigManager {
     private void initValues() {
         setDefaultValue("backpack.perm.bypassForceFilter", "backpack.using.bypassForceFilter");
         setDefaultValue("backpack.perm.bypassFiltering", "backpack.using.bypassFiltering");
+        setDefaultValue("backpack.bypass.requiredGameMode", Collections.singletonList("CREATIVE"));
+        setDefaultValue("backpack.bypass.deactivateForceFilter", false);
         setDefaultValue("backpack.name.shulker.default", "Shulker box");
         setDefaultValue("backpack.warn.notFound.byMaterial", "Could not parse \"%s\" to material");
         setDefaultValue("backpack.info.finishedInit", "Backpack (v0.2.3) initializing finished");
