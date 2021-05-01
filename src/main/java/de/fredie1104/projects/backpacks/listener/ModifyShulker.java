@@ -107,7 +107,7 @@ public class ModifyShulker implements Listener {
         String defaultName = ConfigManager.getString("backpack.name.shulker.default");
         String fallbackName = (localizedName.isEmpty()) ? defaultName : localizedName;
 
-        String displayName = im.getDisplayName();
+        String displayName = designate(im.getDisplayName());
         String backpackName = (displayName.isEmpty()) ? fallbackName : displayName;
 
         ShulkerBox shulker = (ShulkerBox) im.getBlockState();
@@ -272,5 +272,10 @@ public class ModifyShulker implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
         p.closeInventory();
+    }
+
+    private String designate(String oldName) {
+        String customName = ConfigManager.getCustomNameEntry(oldName);
+        return (customName != null) ? customName : oldName;
     }
 }
