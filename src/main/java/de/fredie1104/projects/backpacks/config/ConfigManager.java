@@ -2,17 +2,19 @@ package de.fredie1104.projects.backpacks.config;
 
 import de.fredie1104.projects.backpacks.BackPacks;
 import lombok.Getter;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.GameMode;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ConfigManager {
 
-    private static final String RESOURCE_NOT_FOUND = "Unable to load %s it will be initialize with a default (%s)";
+    private static final String RESOURCE_NOT_FOUND = "Unable to load %s it will be initialize with a default value (%s)";
     private static final String RESOURCE_NOT_PARSED = "Unable to parse %s as %s it will be ignored";
 
     private static BackPacks instance;
@@ -20,14 +22,39 @@ public class ConfigManager {
     @Getter
     private static FileConfiguration config;
     @Getter
+    private static HashMap<String, String> customNames;
+    @Getter
     private static ArrayList<GameMode> requiredGameModes;
 
     public ConfigManager(BackPacks backPack) {
         instance = backPack;
         config = instance.getConfig();
+        customNames = loadCustomNames("backpack.name.shulker.custom");
         requiredGameModes = getGamesModes("backpack.bypass.requiredGameMode");
         initValues();
     }
+
+    public static HashMap<String, String> loadCustomNames(String path) {
+        ConfigurationSection configurationSection = config.getConfigurationSection(path);
+        if (configurationSection == null) {
+            log.warning(String.format(RESOURCE_NOT_FOUND, path, null));
+            return new HashMap<>();
+        }
+
+        Set<String> keys = configurationSection.getKeys(false);
+        HashMap<String, String> customNames = new HashMap<>();
+        for (String key : keys) {
+            customNames.put(key, StringEscapeUtils.unescapeJava(configurationSection.getString(key)));
+        }
+
+        return customNames;
+    }
+
+    @Nullable
+    public static String getCustomNameEntry(@Nonnull String key) {
+        return customNames.get(key);
+    }
+
 
     public static ArrayList<GameMode> getGamesModes(String path) {
         ArrayList<String> raw = (ArrayList<String>) config.get(path);
