@@ -19,9 +19,11 @@
 package de.fredie1104.projects.backpacks.listener;
 
 
+import de.fredie1104.projects.backpacks.BackPacks;
 import de.fredie1104.projects.backpacks.config.ConfigManager;
 import de.fredie1104.projects.backpacks.utils.Filtering;
 import de.fredie1104.projects.backpacks.utils.Groups;
+import de.fredie1104.projects.backpacks.watchdog.Watchdog;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
@@ -47,6 +49,7 @@ public class ModifyShulker implements Listener {
     @Getter
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final Filtering forbidden = new Filtering();
+    private static Watchdog watchdog = BackPacks.getWatchdog();
 
     private void filteringInventory(Inventory inventory, Player player) {
 
@@ -114,6 +117,7 @@ public class ModifyShulker implements Listener {
         Inventory inv = Bukkit.createInventory(null, 27, backpackName);
         inv.setContents(shulker.getInventory().getContents());
 
+        watchdog.log("Open", p, null);
         openedShulkers.add(p);
         p.openInventory(inv);
     }
@@ -126,6 +130,7 @@ public class ModifyShulker implements Listener {
             return;
         }
         openedShulkers.remove(p);
+        watchdog.log("Close", p, null);
 
         PlayerInventory inv = p.getInventory();
         boolean offHand = Groups.isShulker(inv.getItemInOffHand());
@@ -163,6 +168,8 @@ public class ModifyShulker implements Listener {
         if (!openedShulkers.contains(p)) {
             return;
         }
+
+        watchdog.log("Interact", p, String.format("{ %s(%s), %s -> %s, %s}", e.getClickedInventory(), e.getRawSlot(), e.getCurrentItem(), e.getCursor(), e.getAction()));
 
         Inventory clickedInv = e.getClickedInventory();
         if (clickedInv == null) {

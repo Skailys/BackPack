@@ -33,6 +33,7 @@ public final class BackPacks extends JavaPlugin {
     private static BackPacks instance;
     @Getter
     private static BukkitScheduler scheduler;
+    @Getter
     private static Watchdog watchdog;
 
     @Override
@@ -43,6 +44,7 @@ public final class BackPacks extends JavaPlugin {
 
         scheduler = Bukkit.getScheduler();
         watchdog = new Watchdog();
+        scheduler.runTask(instance, () -> watchdog.archiveLogs());
         scheduler.runTask(instance, () -> watchdog.run());
         instance.getLogger().info(ConfigManager.getString("backpack.info.finishedInit"));
 
@@ -53,6 +55,8 @@ public final class BackPacks extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        watchdog.panic();
+        watchdog.writeCache();
     }
 
     private void initConfigManager() {
