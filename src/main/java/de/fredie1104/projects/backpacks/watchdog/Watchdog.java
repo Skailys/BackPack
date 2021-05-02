@@ -75,8 +75,6 @@ public class Watchdog {
             out.close();
 
             cache.clear();
-            log.info("Cache written to latest.log");
-
         } catch (IOException e) {
             e.printStackTrace();
         }
