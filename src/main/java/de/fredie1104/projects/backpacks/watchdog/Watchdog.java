@@ -27,16 +27,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.zip.ZipOutputStream;
 
 public class Watchdog {
 
@@ -66,12 +65,15 @@ public class Watchdog {
     public void writeCache() {
         try {
             File logFile = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "latest.log").toFile();
-            logFile.createNewFile();
 
-            FileWriter logWriter = new FileWriter(logFile);
+            FileWriter logWriter = new FileWriter(logFile, true);
+            BufferedWriter out = new BufferedWriter(logWriter);
+
             for (String cachedLog : cache) {
-                logWriter.write(StringEscapeUtils.unescapeJava(String.format("%s\\n", cachedLog)));
+                out.write(StringEscapeUtils.unescapeJava(String.format("%s\\n", cachedLog)));
             }
+            out.close();
+
             cache.clear();
             log.info("Cache written to latest.log");
 
@@ -80,6 +82,7 @@ public class Watchdog {
         }
     }
 
+    /*
     public void archiveLogs() {
         try {
             File latestLog = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "latest.log").toFile();
@@ -96,6 +99,7 @@ public class Watchdog {
             e.printStackTrace();
         }
     }
+     */
 
     public void panic() {
         shutdown();

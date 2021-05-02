@@ -267,6 +267,7 @@ public class ModifyShulker implements Listener {
 
         ItemStack oldCursor = e.getOldCursor();
         boolean isBackpack = Groups.isInRange(e.getRawSlots(), 0, 26);
+        watchdog.log("Drag", p, String.format("{ Backpack: %s(%s), %s -> %s, %s}", isBackpack, e.getRawSlots(), e.getOldCursor(), e.getCursor(), e.getType()));
 
         if (!(forbidden.disallowed(oldCursor, p) && isBackpack)) {
             return;
@@ -279,6 +280,8 @@ public class ModifyShulker implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
         p.closeInventory();
+
+        watchdog.log("Death", p, e.getDeathMessage());
     }
 
     private String designate(String oldName) {
