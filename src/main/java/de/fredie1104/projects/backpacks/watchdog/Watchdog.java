@@ -72,6 +72,8 @@ public class Watchdog {
             for (String cachedLog : cache) {
                 logWriter.write(StringEscapeUtils.unescapeJava(String.format("%s\\n", cachedLog)));
             }
+            cache.clear();
+            log.info("Cache written to latest.log");
 
         } catch (IOException e) {
             e.printStackTrace();
