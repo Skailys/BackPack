@@ -26,6 +26,7 @@ import de.fredie1104.projects.backpacks.utils.Groups;
 import de.fredie1104.projects.backpacks.watchdog.Watchdog;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,6 +34,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.*;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -78,6 +80,27 @@ public class ModifyShulker implements Listener {
                 player.getWorld().dropItem(player.getLocation().add(0, 0.5, 0), itemStack);
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+        PlayerInventory playerInventory = e.getPlayer().getInventory();
+        ItemStack item = playerInventory.getItem(e.getHand());
+
+        if (item == null) {
+            return;
+        }
+
+        if (!(item.getItemMeta() instanceof BlockStateMeta)) {
+            return;
+        }
+
+        BlockStateMeta im = (BlockStateMeta) item.getItemMeta();
+        if (!(im.getBlockState() instanceof ShulkerBox)) {
+            return;
+        }
+
+        e.setCancelled(true);
     }
 
     @EventHandler
