@@ -53,9 +53,6 @@ public final class BackPacks extends JavaPlugin {
         long sleeping = (int) ConfigManager.get("backpack.watchdog.sleeping");
         scheduler.runTaskTimer(instance, () -> watchdog.run(), DELAY, sleeping);
         scheduler.runTaskTimer(instance, () -> watchdog.writeCache(), DELAY, sleeping);
-
-        PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new ModifyShulker(), this);
     }
 
     @Override
