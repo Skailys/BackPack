@@ -117,9 +117,13 @@ public class ModifyShulker implements Listener {
         Inventory inv = Bukkit.createInventory(null, 27, backpackName);
         inv.setContents(shulker.getInventory().getContents());
 
-        watchdog.log("Open", p, null);
-        openedShulkers.add(p);
-        p.openInventory(inv);
+
+        Bukkit.getScheduler().runTaskLater(BackPacks.getInstance(), () -> {
+            watchdog.log("Open", p, null);
+            openedShulkers.add(p);
+            p.openInventory(inv);
+        }, 1L);
+
     }
 
     @EventHandler

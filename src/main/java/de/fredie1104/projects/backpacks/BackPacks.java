@@ -19,9 +19,11 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 package de.fredie1104.projects.backpacks;
 
 import de.fredie1104.projects.backpacks.config.ConfigManager;
+import de.fredie1104.projects.backpacks.listener.ModifyShulker;
 import de.fredie1104.projects.backpacks.watchdog.Watchdog;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -51,6 +53,9 @@ public final class BackPacks extends JavaPlugin {
         long sleeping = (int) ConfigManager.get("backpack.watchdog.sleeping");
         scheduler.runTaskTimer(instance, () -> watchdog.run(), DELAY, sleeping);
         scheduler.runTaskTimer(instance, () -> watchdog.writeCache(), DELAY, sleeping);
+
+        PluginManager pm = getServer().getPluginManager();
+        pm.registerEvents(new ModifyShulker(), this);
     }
 
     @Override
