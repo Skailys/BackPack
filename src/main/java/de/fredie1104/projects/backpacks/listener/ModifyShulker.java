@@ -44,6 +44,7 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class ModifyShulker implements Listener {
 
@@ -85,8 +86,9 @@ public class ModifyShulker implements Listener {
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
         PlayerInventory playerInventory = e.getPlayer().getInventory();
+
         boolean interactHand = Groups.isShulker(playerInventory.getItem(e.getHand()));
-        boolean offHand = Groups.isShulker(playerInventory.getItem(e.getHand()));
+        boolean offHand = Groups.isShulker(playerInventory.getItemInOffHand());
 
         e.setCancelled(interactHand || offHand);
     }
