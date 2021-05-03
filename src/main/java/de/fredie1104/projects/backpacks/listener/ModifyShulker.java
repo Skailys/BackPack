@@ -85,22 +85,10 @@ public class ModifyShulker implements Listener {
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
         PlayerInventory playerInventory = e.getPlayer().getInventory();
-        ItemStack item = playerInventory.getItem(e.getHand());
+        boolean interactHand = Groups.isShulker(playerInventory.getItem(e.getHand()));
+        boolean offHand = Groups.isShulker(playerInventory.getItem(e.getHand()));
 
-        if (item == null) {
-            return;
-        }
-
-        if (!(item.getItemMeta() instanceof BlockStateMeta)) {
-            return;
-        }
-
-        BlockStateMeta im = (BlockStateMeta) item.getItemMeta();
-        if (!(im.getBlockState() instanceof ShulkerBox)) {
-            return;
-        }
-
-        e.setCancelled(true);
+        e.setCancelled(interactHand || offHand);
     }
 
     @EventHandler

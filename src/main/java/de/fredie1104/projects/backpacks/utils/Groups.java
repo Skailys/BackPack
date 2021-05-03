@@ -48,6 +48,10 @@ public class Groups {
 
 
     public static boolean isShulker(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+
         if (!(item.getItemMeta() instanceof BlockStateMeta)) {
             return false;
         }
