@@ -46,7 +46,8 @@ public final class BackPacks extends JavaPlugin {
 
         scheduler = Bukkit.getScheduler();
         watchdog = new Watchdog();
-        //scheduler.runTask(instance, () -> watchdog.archiveLogs());
+
+        scheduler.runTask(instance, () -> watchdog.archiveLogs());
         scheduler.runTask(instance, () -> watchdog.run());
         instance.getLogger().info(ConfigManager.getString("backpack.info.finishedInit"));
 

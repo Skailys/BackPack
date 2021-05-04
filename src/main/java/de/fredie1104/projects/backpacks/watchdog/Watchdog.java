@@ -27,15 +27,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.zip.GZIPOutputStream;
 
 public class Watchdog {
 
@@ -80,7 +81,7 @@ public class Watchdog {
         }
     }
 
-    /*
+
     public void archiveLogs() {
         try {
             File latestLog = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "latest.log").toFile();
@@ -91,13 +92,23 @@ public class Watchdog {
             BasicFileAttributes attributes = Files.readAttributes(Path.of(latestLog.getAbsolutePath()), BasicFileAttributes.class);
             FileTime lastInteract = attributes.lastModifiedTime();
 
-            latestLog.renameTo(Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "logs", String.format("%s.log", lastInteract.toMillis())).toFile());
+            File inputFile = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "latest.log").toFile();
+            File outputFile = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), String.format("%s.log.gz", lastInteract.toMillis())).toFile();
+
+            BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(inputFile));
+            BufferedOutputStream outputStream = new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(outputFile)));
+
+            int c;
+            while ((c = inputStream.read()) != -1) {
+                outputStream.write(c);
+            }
+
+            if (!latestLog.delete()) log.warning("Could not delete latest.log");
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-     */
 
     public void panic() {
         shutdown();
