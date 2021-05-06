@@ -115,7 +115,7 @@ public class ConfigManager {
         setDefaultValue("backpack.warn.cooldown", "§4Don't open the backpacks too fast");
         setDefaultValue("backpack.info.finishedInit", "Backpack (v0.2.3) initializing finished");
         setDefaultValue("backpack.items.forbidden.material", new ArrayList<String>());
-        setDefaultValue("backpack.usage.cooldown", 1000L);
+        setDefaultValue("backpack.usage.cooldown", 1000);
         setDefaultValue("backpack.watchdog.tps", 17.5);
         setDefaultValue("backpack.watchdog.sleeping", 2400);
         setDefaultValue("backpack.watchdog.startup", "Plugin is now usable");

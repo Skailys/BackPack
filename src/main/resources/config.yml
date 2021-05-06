@@ -36,7 +36,7 @@ backpack:
       byMaterial: "Could not parse \"%s\" to material"
     cooldown: "Don't open the backpacks too fast"
   usage:
-    cooldown: 10ß0
+    cooldown: 1000
   watchdog:
     tps: 17.5
     sleeping: 2400
