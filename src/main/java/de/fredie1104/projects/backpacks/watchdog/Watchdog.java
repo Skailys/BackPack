@@ -84,6 +84,7 @@ public class Watchdog {
 
 
     public void archiveLogs() {
+        /*
         try {
             File latestLog = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "latest.log").toFile();
             if (!latestLog.exists()) {
@@ -109,6 +110,22 @@ public class Watchdog {
         } catch (IOException e) {
             e.printStackTrace();
         }
+         */
+
+        try {
+            File latestLog = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), "latest.log").toFile();
+
+            BasicFileAttributes attributes = Files.readAttributes(Path.of(latestLog.getAbsolutePath()), BasicFileAttributes.class);
+            FileTime lastInteract = attributes.lastModifiedTime();
+
+            File archiveLocation = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), String.format("%s.log.gz", lastInteract.toMillis())).toFile();
+            latestLog.renameTo(archiveLocation);
+            latestLog.delete();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void panic() {
