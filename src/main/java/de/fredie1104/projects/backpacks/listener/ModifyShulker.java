@@ -19,6 +19,7 @@
 package de.fredie1104.projects.backpacks.listener;
 
 
+import com.destroystokyo.paper.Title;
 import de.fredie1104.projects.backpacks.BackPacks;
 import de.fredie1104.projects.backpacks.config.ConfigManager;
 import de.fredie1104.projects.backpacks.utils.Filtering;
@@ -41,6 +42,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
+import java.time.Instant;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -51,6 +54,7 @@ public class ModifyShulker implements Listener {
     private final static int OFF_HAND_SLOT = 45;
     @Getter
     private static final Set<Player> openedShulkers = new HashSet<>();
+    private static final HashMap<Player, Long> playerCooldown = new HashMap<>();
     private static final Filtering forbidden = new Filtering();
     private static Watchdog watchdog = BackPacks.getWatchdog();
 
@@ -99,6 +103,15 @@ public class ModifyShulker implements Listener {
 
         if (e.getAction() != Action.RIGHT_CLICK_AIR) {
             return;
+        }
+
+
+        if (playerCooldown.containsKey(p)) {
+            if(Instant.now().toEpochMilli() - playerCooldown.get(p) < (int) ConfigManager.get("backpack.usage.cooldown")) {
+                String warning = ConfigManager.getString("backpack.warn.cooldown");
+                p.sendActionBar(warning);
+                return;
+            }
         }
 
         if (openedShulkers.contains(p)) {
@@ -172,6 +185,8 @@ public class ModifyShulker implements Listener {
 
         bsm.setBlockState(box);
         box.update();
+
+        playerCooldown.put(p, Instant.now().toEpochMilli());
 
         int slot = (mainHand) ? p.getInventory().getHeldItemSlot() : OFF_HAND_SLOT;
         origin.setItemMeta(bsm);
@@ -301,8 +316,19 @@ public class ModifyShulker implements Listener {
         watchdog.log("Death", p, e.getDeathMessage());
     }
 
+    public void cleanCooldowns() {
+        int threshold = (int) ConfigManager.get("backpack.usage.cooldown");
+        for (Player key : playerCooldown.keySet()) {
+            if (playerCooldown.get(key) < threshold) {
+                continue;
+            }
+            playerCooldown.remove(key);
+        }
+    }
+
     private String designate(String oldName) {
         String customName = ConfigManager.getCustomNameEntry(oldName);
         return (customName != null) ? customName : oldName;
     }
+
 }

@@ -37,6 +37,8 @@ public final class BackPacks extends JavaPlugin {
     private static BukkitScheduler scheduler;
     @Getter
     private static Watchdog watchdog;
+    @Getter
+    private static ModifyShulker modifyShulker;
 
     @Override
     public void onEnable() {
@@ -46,6 +48,7 @@ public final class BackPacks extends JavaPlugin {
 
         scheduler = Bukkit.getScheduler();
         watchdog = new Watchdog();
+        modifyShulker = new ModifyShulker();
 
         scheduler.runTask(instance, () -> watchdog.archiveLogs());
         scheduler.runTask(instance, () -> watchdog.run());
@@ -54,6 +57,7 @@ public final class BackPacks extends JavaPlugin {
         long sleeping = (int) ConfigManager.get("backpack.watchdog.sleeping");
         scheduler.runTaskTimer(instance, () -> watchdog.run(), DELAY, sleeping);
         scheduler.runTaskTimer(instance, () -> watchdog.writeCache(), DELAY, sleeping);
+        scheduler.runTaskTimer(instance, () -> modifyShulker.cleanCooldowns(), DELAY, sleeping);
     }
 
     @Override

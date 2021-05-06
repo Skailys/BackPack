@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.*;
@@ -120,7 +121,7 @@ public class Watchdog {
 
     private void startup() {
         PluginManager pm = BackPacks.getInstance().getServer().getPluginManager();
-        pm.registerEvents(new ModifyShulker(), BackPacks.getInstance());
+        pm.registerEvents(BackPacks.getModifyShulker(), BackPacks.getInstance());
 
         cache.add(String.format("[%s] [%s] %s", Instant.now(), "Startup", ConfigManager.getString("backpack.watchdog.startup")));
         online = true;
