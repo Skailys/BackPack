@@ -43,11 +43,9 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.BlockStateMeta;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ModifyShulker implements Listener {
 
@@ -145,7 +143,7 @@ public class ModifyShulker implements Listener {
 
 
         Bukkit.getScheduler().runTaskLater(BackPacks.getInstance(), () -> {
-            watchdog.log("Open", p, null);
+            watchdog.log("Open", p, Arrays.stream(inv.getContents()).map(String::valueOf).collect(Collectors.joining()));
             openedShulkers.add(p);
             p.openInventory(inv);
         }, 1L);
@@ -160,7 +158,7 @@ public class ModifyShulker implements Listener {
             return;
         }
         openedShulkers.remove(p);
-        watchdog.log("Close", p, null);
+        watchdog.log("Close", p, Arrays.stream(e.getInventory().getContents()).map(String::valueOf).collect(Collectors.joining()));
 
         PlayerInventory inv = p.getInventory();
         boolean offHand = Groups.isShulker(inv.getItemInOffHand());
@@ -319,6 +317,10 @@ public class ModifyShulker implements Listener {
     public void cleanCooldowns() {
         int threshold = (int) ConfigManager.get("backpack.usage.cooldown");
         for (Player key : playerCooldown.keySet()) {
+            if (key == null) {
+                continue;
+            }
+
             if (playerCooldown.get(key) < threshold) {
                 continue;
             }
