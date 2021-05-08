@@ -143,7 +143,7 @@ public class ModifyShulker implements Listener {
 
 
         Bukkit.getScheduler().runTaskLater(BackPacks.getInstance(), () -> {
-            watchdog.log("Open", p, Arrays.stream(inv.getContents()).map(String::valueOf).collect(Collectors.joining()));
+            watchdog.log("Open", p, String.valueOf(dumpItemStacks(inv.getContents())));
             openedShulkers.add(p);
             p.openInventory(inv);
         }, 1L);
@@ -158,7 +158,7 @@ public class ModifyShulker implements Listener {
             return;
         }
         openedShulkers.remove(p);
-        watchdog.log("Close", p, Arrays.stream(e.getInventory().getContents()).map(String::valueOf).collect(Collectors.joining()));
+        watchdog.log("Close", p, String.valueOf(dumpItemStacks(e.getInventory().getContents())));
 
         PlayerInventory inv = p.getInventory();
         boolean offHand = Groups.isShulker(inv.getItemInOffHand());
@@ -326,6 +326,14 @@ public class ModifyShulker implements Listener {
             }
             playerCooldown.remove(key);
         }
+    }
+
+    private List<String> dumpItemStacks(ItemStack[] itemStacks) {
+        List<String> dumps = new ArrayList<>();
+        for (ItemStack itemStack : itemStacks) {
+            dumps.add(String.valueOf(itemStack));
+        }
+        return dumps;
     }
 
     private String designate(String oldName) {
