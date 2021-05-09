@@ -242,6 +242,11 @@ public class ModifyShulker implements Listener {
                 int hotbarButton = e.getHotbarButton();
                 boolean isSwap = inventoryAction == InventoryAction.HOTBAR_SWAP;
 
+                if (hotbarButton == -1) {
+                    e.setCancelled(true);
+                    return;
+                }
+
                 ItemStack hotbarItem = playerInventory.getItem(hotbarButton);
                 if (hotbarItem == null) {
                     return;
