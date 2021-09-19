@@ -322,14 +322,14 @@ public class ModifyShulker implements Listener {
     public void cleanCooldowns() {
         int threshold = (int) ConfigManager.get("backpack.usage.cooldown");
         for (Player key : playerCooldown.keySet()) {
-            if (key == null) {
-                continue;
+            try {
+                if (playerCooldown.get(key) < threshold) {
+                    continue;
+                }
+                playerCooldown.remove(key);
+            } catch (NullPointerException e) {
+                BackPacks.getInstance().getLogger().warning(String.format("Cooldown of %s couldn't be deleted", key));
             }
-
-            if (playerCooldown.get(key) < threshold) {
-                continue;
-            }
-            playerCooldown.remove(key);
         }
     }
 
