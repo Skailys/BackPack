@@ -328,7 +328,7 @@ public class ModifyShulker implements Listener {
                 }
                 playerCooldown.remove(key);
             } catch (NullPointerException e) {
-                BackPacks.getInstance().getLogger().warning(String.format("Cooldown of %s couldn't be deleted", key));
+                BackPacks.getInstance().getLogger().info(String.format("Cooldown of %s couldn't be deleted", key));
             }
         }
     }
