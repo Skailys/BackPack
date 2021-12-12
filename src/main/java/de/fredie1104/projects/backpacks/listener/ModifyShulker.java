@@ -24,8 +24,6 @@ import de.fredie1104.projects.backpacks.config.ConfigManager;
 import de.fredie1104.projects.backpacks.utils.Detection;
 import de.fredie1104.projects.backpacks.utils.Filtering;
 import de.fredie1104.projects.backpacks.utils.Groups;
-import de.fredie1104.projects.backpacks.watchdog.Watchdog;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
@@ -50,7 +48,6 @@ public class ModifyShulker implements Listener {
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final HashMap<Player, Long> playerCooldown = new HashMap<>();
     private static final Filtering forbidden = new Filtering();
-    private static Watchdog watchdog = BackPacks.getWatchdog();
 
     private void filteringInventory(Inventory inventory, Player player) {
 
@@ -129,7 +126,6 @@ public class ModifyShulker implements Listener {
 
 
         Bukkit.getScheduler().runTaskLater(BackPacks.getInstance(), () -> {
-            watchdog.log("Open", p, String.valueOf(dumpItemStacks(inv.getContents())));
             openedShulkers.add(p);
             p.openInventory(inv);
         }, 1L);
@@ -144,7 +140,6 @@ public class ModifyShulker implements Listener {
             return;
         }
         openedShulkers.remove(p);
-        watchdog.log("Close", p, String.valueOf(dumpItemStacks(e.getInventory().getContents())));
 
         PlayerInventory inv = p.getInventory();
         boolean offHand = Groups.isShulker(inv.getItemInOffHand());
@@ -184,8 +179,6 @@ public class ModifyShulker implements Listener {
         if (!openedShulkers.contains(p)) {
             return;
         }
-
-        watchdog.log("Interact", p, String.format("{ %s(%s), %s -> %s, %s}", e.getClickedInventory(), e.getRawSlot(), e.getCurrentItem(), e.getCursor(), e.getAction()));
 
         Inventory clickedInv = e.getClickedInventory();
         if (clickedInv == null) {
@@ -288,7 +281,6 @@ public class ModifyShulker implements Listener {
 
         ItemStack oldCursor = e.getOldCursor();
         boolean isBackpack = Groups.isInRange(e.getRawSlots(), 0, 26);
-        watchdog.log("Drag", p, String.format("{ Backpack: %s(%s), %s -> %s, %s}", isBackpack, e.getRawSlots(), e.getOldCursor(), e.getCursor(), e.getType()));
 
         if (!(forbidden.disallowed(oldCursor, p) && isBackpack)) {
             return;
@@ -300,14 +292,16 @@ public class ModifyShulker implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
-        p.closeInventory();
-
-        watchdog.log("Death", p, e.getDeathMessage());
+        if (!openedShulkers.contains(p)) {
+            p.closeInventory();
+        }
     }
 
     public void cleanCooldowns() {
+        Set<Player> keys = playerCooldown.keySet();
+
         int threshold = (int) ConfigManager.get("backpack.usage.cooldown");
-        for (Player key : playerCooldown.keySet()) {
+        for (Player key : keys) {
             try {
                 if (playerCooldown.get(key) < threshold) {
                     continue;
