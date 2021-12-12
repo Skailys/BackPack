@@ -298,10 +298,9 @@ public class ModifyShulker implements Listener {
     }
 
     public void cleanCooldowns() {
-        Set<Player> keys = playerCooldown.keySet();
-
         int threshold = (int) ConfigManager.get("backpack.usage.cooldown");
-        for (Player key : keys) {
+        Set<Player> playerSet = playerCooldown.keySet();
+        for (Player key : playerSet) {
             try {
                 if (playerCooldown.get(key) < threshold) {
                     continue;
