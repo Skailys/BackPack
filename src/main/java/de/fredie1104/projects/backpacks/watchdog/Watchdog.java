@@ -137,6 +137,8 @@ public class Watchdog {
     }
 
     private void startup() {
+        HandlerList.unregisterAll(BackPacks.getInstance());
+
         PluginManager pm = BackPacks.getInstance().getServer().getPluginManager();
         pm.registerEvents(BackPacks.getModifyShulker(), BackPacks.getInstance());
 
@@ -165,5 +167,8 @@ public class Watchdog {
 
         HandlerList.unregisterAll(BackPacks.getInstance());
         online = false;
+
+        PluginManager pm = BackPacks.getInstance().getServer().getPluginManager();
+        pm.registerEvents(BackPacks.getFallback(), BackPacks.getInstance());
     }
 }

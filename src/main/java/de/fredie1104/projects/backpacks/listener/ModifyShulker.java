@@ -19,15 +19,14 @@
 package de.fredie1104.projects.backpacks.listener;
 
 
-import com.destroystokyo.paper.Title;
 import de.fredie1104.projects.backpacks.BackPacks;
 import de.fredie1104.projects.backpacks.config.ConfigManager;
+import de.fredie1104.projects.backpacks.utils.Detection;
 import de.fredie1104.projects.backpacks.utils.Filtering;
 import de.fredie1104.projects.backpacks.utils.Groups;
 import de.fredie1104.projects.backpacks.watchdog.Watchdog;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,13 +43,10 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 
 import java.time.Instant;
 import java.util.*;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class ModifyShulker implements Listener {
 
     private final static int OFF_HAND_SLOT = 45;
-    @Getter
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final HashMap<Player, Long> playerCooldown = new HashMap<>();
     private static final Filtering forbidden = new Filtering();
@@ -117,19 +113,9 @@ public class ModifyShulker implements Listener {
         }
 
         ItemStack item = e.getItem();
-        if (item == null) {
-            return;
-        }
-
-        if (!(item.getItemMeta() instanceof BlockStateMeta)) {
-            return;
-        }
+        if (Detection.isShulker(item)) return;
 
         BlockStateMeta im = (BlockStateMeta) item.getItemMeta();
-        if (!(im.getBlockState() instanceof ShulkerBox)) {
-            return;
-        }
-
         String localizedName = im.getLocalizedName();
         String defaultName = ConfigManager.getString("backpack.name.shulker.default");
         String fallbackName = (localizedName.isEmpty()) ? defaultName : localizedName;
@@ -344,6 +330,10 @@ public class ModifyShulker implements Listener {
     private String designate(String oldName) {
         String customName = ConfigManager.getCustomNameEntry(oldName);
         return (customName != null) ? customName : oldName;
+    }
+
+    public static Set<Player> getOpenedShulkers() {
+        return openedShulkers;
     }
 
 }

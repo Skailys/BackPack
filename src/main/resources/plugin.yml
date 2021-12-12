@@ -15,3 +15,8 @@ permissions:
     description: Allows you to disable the force filtering after InventoryClickEvent and InventoryCloseEvent
     default: false
 
+commands:
+  backpack:
+    description: BackPack tools
+    usage: /backpack list
+

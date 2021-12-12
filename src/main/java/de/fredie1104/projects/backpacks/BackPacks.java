@@ -18,27 +18,29 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 package de.fredie1104.projects.backpacks;
 
+import de.fredie1104.projects.backpacks.commands.Backpack;
 import de.fredie1104.projects.backpacks.config.ConfigManager;
+import de.fredie1104.projects.backpacks.listener.FallbackListener;
 import de.fredie1104.projects.backpacks.listener.ModifyShulker;
 import de.fredie1104.projects.backpacks.watchdog.Watchdog;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Objects;
+
 
 public final class BackPacks extends JavaPlugin {
 
     private static final long DELAY = 0;
-    @Getter
-    private static BackPacks instance;
-    @Getter
-    private static BukkitScheduler scheduler;
-    @Getter
-    private static Watchdog watchdog;
-    @Getter
-    private static ModifyShulker modifyShulker;
+    @Getter private static BackPacks instance;
+    @Getter private static BukkitScheduler scheduler;
+    @Getter private static Watchdog watchdog;
+    @Getter private static ModifyShulker modifyShulker;
+    @Getter private static FallbackListener fallback;
 
     @Override
     public void onEnable() {
@@ -49,6 +51,7 @@ public final class BackPacks extends JavaPlugin {
         scheduler = Bukkit.getScheduler();
         watchdog = new Watchdog();
         modifyShulker = new ModifyShulker();
+        fallback = new FallbackListener();
 
         scheduler.runTask(instance, () -> watchdog.archiveLogs());
         scheduler.runTask(instance, () -> watchdog.run());
@@ -58,6 +61,8 @@ public final class BackPacks extends JavaPlugin {
         scheduler.runTaskTimer(instance, () -> watchdog.run(), DELAY, sleeping);
         scheduler.runTaskTimer(instance, () -> watchdog.writeCache(), DELAY, sleeping);
         scheduler.runTaskTimer(instance, () -> modifyShulker.cleanCooldowns(), DELAY, sleeping);
+
+        Objects.requireNonNull(getCommand("backpack")).setExecutor(new Backpack());
     }
 
     @Override
