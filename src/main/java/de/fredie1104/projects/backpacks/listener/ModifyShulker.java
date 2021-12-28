@@ -50,7 +50,8 @@ public class ModifyShulker implements Listener {
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final HashMap<Player, Long> playerCooldown = new HashMap<>();
     private static final Filtering forbidden = new Filtering();
-    private static Watchdog watchdog = BackPacks.getWatchdog();
+    private static final Watchdog watchdog = BackPacks.getWatchdog();
+    private final List<Player> removeList = new ArrayList<>();
 
     private void filteringInventory(Inventory inventory, Player player) {
 
@@ -312,11 +313,13 @@ public class ModifyShulker implements Listener {
                 if (playerCooldown.get(key) < threshold) {
                     continue;
                 }
-                playerCooldown.remove(key);
+                removeList.add(key);
             } catch (NullPointerException | ConcurrentModificationException e) {
                 BackPacks.getInstance().getLogger().info(String.format("Cooldown of %s couldn't be deleted", key));
             }
         }
+        removeList.forEach(playerCooldown::remove);
+        removeList.clear();
     }
 
     private List<String> dumpItemStacks(ItemStack[] itemStacks) {
