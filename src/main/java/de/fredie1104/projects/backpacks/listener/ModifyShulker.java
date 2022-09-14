@@ -44,7 +44,7 @@ import java.util.*;
 
 public class ModifyShulker implements Listener {
 
-    private final static int OFF_HAND_SLOT = 45;
+//    private final static int OFF_HAND_SLOT = 45;
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final HashMap<Player, Long> playerCooldown = new HashMap<>();
     private static final Filtering forbidden = new Filtering();
@@ -83,9 +83,9 @@ public class ModifyShulker implements Listener {
         PlayerInventory playerInventory = e.getPlayer().getInventory();
 
         boolean interactHand = Groups.isShulker(playerInventory.getItem(e.getHand()));
-        boolean offHand = Groups.isShulker(playerInventory.getItemInOffHand());
+//        boolean offHand = Groups.isShulker(playerInventory.getItemInOffHand());
 
-        e.setCancelled(interactHand || offHand);
+        e.setCancelled(interactHand /* || offHand */);
     }
 
     @EventHandler
@@ -109,8 +109,8 @@ public class ModifyShulker implements Listener {
             return;
         }
 
-        ItemStack item = e.getItem();
-        if (Detection.isShulker(item)) return;
+        ItemStack item = p.getInventory().getItemInMainHand();
+        if (!Detection.isShulker(item)) return;
 
         BlockStateMeta im = (BlockStateMeta) item.getItemMeta();
         String localizedName = im.getLocalizedName();
@@ -124,10 +124,10 @@ public class ModifyShulker implements Listener {
         Inventory inv = Bukkit.createInventory(null, 27, backpackName);
         inv.setContents(shulker.getInventory().getContents());
 
-
+        openedShulkers.add(p);
         Bukkit.getScheduler().runTaskLater(BackPacks.getInstance(), () -> {
-            openedShulkers.add(p);
             p.openInventory(inv);
+            writeToMainHand(p.getInventory().getItemInMainHand(), Bukkit.createInventory(null, 27), p);
         }, 1L);
 
     }
@@ -142,34 +142,14 @@ public class ModifyShulker implements Listener {
         openedShulkers.remove(p);
 
         PlayerInventory inv = p.getInventory();
-        boolean offHand = Groups.isShulker(inv.getItemInOffHand());
         boolean mainHand = Groups.isShulker(inv.getItemInMainHand());
 
-        if (!offHand && !mainHand) {
+        if (!mainHand) {
             return;
         }
 
-        ItemStack origin = (mainHand) ? p.getInventory().getItemInMainHand() : p.getInventory().getItemInOffHand();
-        BlockStateMeta bsm = (BlockStateMeta) origin.getItemMeta();
-        if (bsm == null) {
-            return;
-        }
-
-        ShulkerBox box = (ShulkerBox) bsm.getBlockState();
-
-        Inventory eventInventory = e.getInventory();
-        filteringInventory(eventInventory, p);
-
-        box.getInventory().setContents(eventInventory.getContents());
-
-        bsm.setBlockState(box);
-        box.update();
-
-        playerCooldown.put(p, Instant.now().toEpochMilli());
-
-        int slot = (mainHand) ? p.getInventory().getHeldItemSlot() : OFF_HAND_SLOT;
-        origin.setItemMeta(bsm);
-        p.getInventory().setItem(slot, origin);
+        ItemStack origin = p.getInventory().getItemInMainHand();
+        writeToMainHand(origin, e.getInventory(), p);
     }
 
     @EventHandler
@@ -299,17 +279,35 @@ public class ModifyShulker implements Listener {
 
     public void cleanCooldowns() {
         int threshold = (int) ConfigManager.get("backpack.usage.cooldown");
-        Set<Player> playerSet = playerCooldown.keySet();
+        Set<Player> playerSet = Collections.unmodifiableSet(playerCooldown.keySet());
         for (Player key : playerSet) {
-            try {
-                if (playerCooldown.get(key) < threshold) {
-                    continue;
-                }
-                playerCooldown.remove(key);
-            } catch (NullPointerException | ConcurrentModificationException e) {
-                BackPacks.getInstance().getLogger().info(String.format("Cooldown of %s couldn't be deleted", key));
+            if (playerCooldown.get(key) < threshold) {
+                continue;
             }
+            playerCooldown.remove(key);
         }
+    }
+
+    public void writeToMainHand(ItemStack origin, Inventory inventory, Player player) {
+        BlockStateMeta bsm = (BlockStateMeta) origin.getItemMeta();
+        if (bsm == null) {
+            return;
+        }
+
+        ShulkerBox box = (ShulkerBox) bsm.getBlockState();
+
+        filteringInventory(inventory, player);
+
+        box.getInventory().setContents(inventory.getContents());
+
+        bsm.setBlockState(box);
+        box.update();
+
+        playerCooldown.put(player, Instant.now().toEpochMilli());
+
+        int slot = player.getInventory().getHeldItemSlot();
+        origin.setItemMeta(bsm);
+        player.getInventory().setItem(slot, origin);
     }
 
     private List<String> dumpItemStacks(ItemStack[] itemStacks) {

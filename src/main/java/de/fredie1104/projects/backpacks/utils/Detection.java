@@ -25,14 +25,14 @@ import org.bukkit.inventory.meta.BlockStateMeta;
 public class Detection {
     public static boolean isShulker(ItemStack item) {
         if (item == null) {
-            return true;
+            return false;
         }
 
         if (!(item.getItemMeta() instanceof BlockStateMeta)) {
-            return true;
+            return false;
         }
 
         BlockStateMeta im = (BlockStateMeta) item.getItemMeta();
-        return !(im.getBlockState() instanceof ShulkerBox);
+        return im.getBlockState() instanceof ShulkerBox;
     }
 }
