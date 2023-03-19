@@ -118,7 +118,7 @@ public class Watchdog {
             BasicFileAttributes attributes = Files.readAttributes(Path.of(latestLog.getAbsolutePath()), BasicFileAttributes.class);
             FileTime lastInteract = attributes.lastModifiedTime();
 
-            File archiveLocation = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), String.format("%s.log.gz", lastInteract.toMillis())).toFile();
+            File archiveLocation = Path.of(BackPacks.getInstance().getDataFolder().getAbsolutePath(), String.format("%s.txt", lastInteract.toMillis())).toFile();
             latestLog.renameTo(archiveLocation);
             latestLog.delete();
 
