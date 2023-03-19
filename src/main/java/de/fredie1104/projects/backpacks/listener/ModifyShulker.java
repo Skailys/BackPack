@@ -34,6 +34,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -208,6 +209,8 @@ public class ModifyShulker implements Listener {
 
                 ItemStack hotbarItem = playerInventory.getItem(hotbarButton);
                 if (hotbarItem == null) {
+                    ItemStack origin = p.getInventory().getItemInMainHand();
+                    writeToMainHand(origin, e.getInventory(), p);
                     return;
                 }
 
@@ -215,6 +218,8 @@ public class ModifyShulker implements Listener {
                 boolean isIllegalMove = forbidden.disallowed(hotbarItem, p) && !isSwap;
 
                 if (!modifyShulkerSlot && !isIllegalMove) {
+                    ItemStack origin = p.getInventory().getItemInMainHand();
+                    writeToMainHand(origin, e.getInventory(), p);
                     return;
                 }
 
@@ -222,11 +227,15 @@ public class ModifyShulker implements Listener {
 
             case MOVE_TO_OTHER_INVENTORY:
                 if (!forbidden.disallowed(currentItem, p) || isBackpack) {
+                    ItemStack origin = p.getInventory().getItemInMainHand();
+                    writeToMainHand(origin, e.getInventory(), p);
                     return;
                 }
                 break;
             case SWAP_WITH_CURSOR:
                 if (!forbidden.disallowed(cursor, p) || !isBackpack) {
+                    ItemStack origin = p.getInventory().getItemInMainHand();
+                    writeToMainHand(origin, e.getInventory(), p);
                     return;
                 }
                 break;
@@ -263,6 +272,8 @@ public class ModifyShulker implements Listener {
         boolean isBackpack = Groups.isInRange(e.getRawSlots(), 0, 26);
 
         if (!(forbidden.disallowed(oldCursor, p) && isBackpack)) {
+            ItemStack origin = p.getInventory().getItemInMainHand();
+            writeToMainHand(origin, e.getInventory(), p);
             return;
         }
 
@@ -273,8 +284,20 @@ public class ModifyShulker implements Listener {
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player p = e.getEntity();
         if (!openedShulkers.contains(p)) {
-            p.closeInventory();
+            return;
         }
+
+        p.closeInventory();
+    }
+
+    @EventHandler
+    public void onPlayerDisconnect(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if (openedShulkers.contains(p)) {
+            return;
+        }
+
+        p.closeInventory();
     }
 
     public void cleanCooldowns() {
