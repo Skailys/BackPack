@@ -16,10 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.utils;
+package dev.skailys.projects.backpacks.utils;
 
-import de.fredie1104.projects.backpacks.BackPacks;
-import de.fredie1104.projects.backpacks.config.ConfigManager;
+import dev.skailys.projects.backpacks.BackPacks;
+import dev.skailys.projects.backpacks.config.ConfigManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -16,17 +16,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks;
+package dev.skailys.projects.backpacks;
 
-import de.fredie1104.projects.backpacks.commands.Backpack;
-import de.fredie1104.projects.backpacks.config.ConfigManager;
-import de.fredie1104.projects.backpacks.listener.FallbackListener;
-import de.fredie1104.projects.backpacks.listener.ModifyShulker;
-import de.fredie1104.projects.backpacks.watchdog.Watchdog;
+import dev.skailys.projects.backpacks.commands.Backpack;
+import dev.skailys.projects.backpacks.config.ConfigManager;
+import dev.skailys.projects.backpacks.listener.FallbackListener;
+import dev.skailys.projects.backpacks.listener.ModifyShulker;
+import dev.skailys.projects.backpacks.watchdog.Watchdog;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 

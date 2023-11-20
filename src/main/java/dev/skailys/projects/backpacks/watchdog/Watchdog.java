@@ -16,16 +16,15 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.watchdog;
+package dev.skailys.projects.backpacks.watchdog;
 
-import de.fredie1104.projects.backpacks.BackPacks;
-import de.fredie1104.projects.backpacks.config.ConfigManager;
-import de.fredie1104.projects.backpacks.listener.ModifyShulker;
-import org.apache.commons.lang.StringEscapeUtils;
+import dev.skailys.projects.backpacks.BackPacks;
+import dev.skailys.projects.backpacks.config.ConfigManager;
+import dev.skailys.projects.backpacks.listener.ModifyShulker;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.*;
@@ -37,7 +36,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Logger;
-import java.util.zip.GZIPOutputStream;
 
 public class Watchdog {
 

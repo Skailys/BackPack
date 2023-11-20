@@ -16,7 +16,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.utils;
+package dev.skailys.projects.backpacks.utils;
 
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.event.inventory.InventoryAction;

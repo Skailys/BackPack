@@ -16,10 +16,10 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.listener;
+package dev.skailys.projects.backpacks.listener;
 
-import de.fredie1104.projects.backpacks.config.ConfigManager;
-import de.fredie1104.projects.backpacks.utils.Detection;
+import dev.skailys.projects.backpacks.config.ConfigManager;
+import dev.skailys.projects.backpacks.utils.Detection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

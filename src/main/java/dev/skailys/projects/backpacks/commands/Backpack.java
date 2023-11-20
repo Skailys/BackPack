@@ -1,7 +1,6 @@
-package de.fredie1104.projects.backpacks.commands;
+package dev.skailys.projects.backpacks.commands;
 
-import de.fredie1104.projects.backpacks.BackPacks;
-import de.fredie1104.projects.backpacks.listener.ModifyShulker;
+import dev.skailys.projects.backpacks.listener.ModifyShulker;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -16,14 +16,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.listener;
+package dev.skailys.projects.backpacks.listener;
 
 
-import de.fredie1104.projects.backpacks.BackPacks;
-import de.fredie1104.projects.backpacks.config.ConfigManager;
-import de.fredie1104.projects.backpacks.utils.Detection;
-import de.fredie1104.projects.backpacks.utils.Filtering;
-import de.fredie1104.projects.backpacks.utils.Groups;
+import dev.skailys.projects.backpacks.BackPacks;
+import dev.skailys.projects.backpacks.config.ConfigManager;
+import dev.skailys.projects.backpacks.utils.Detection;
+import dev.skailys.projects.backpacks.utils.Filtering;
+import dev.skailys.projects.backpacks.utils.Groups;
 import org.bukkit.Bukkit;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;

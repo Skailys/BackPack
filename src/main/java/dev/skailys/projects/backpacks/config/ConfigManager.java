@@ -16,11 +16,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-package de.fredie1104.projects.backpacks.config;
+package dev.skailys.projects.backpacks.config;
 
-import de.fredie1104.projects.backpacks.BackPacks;
+import dev.skailys.projects.backpacks.BackPacks;
 import lombok.Getter;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
