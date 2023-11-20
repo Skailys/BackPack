@@ -1,7 +1,7 @@
 name: BackPacks
 version: ${project.version}
 main: de.fredie1104.projects.backpacks.BackPacks
-api-version: 1.16
+api-version: 1.20.2
 authors: [ fredie1104 ]
 description: BackPacks is a spigot plugin to open shulker like normal backpack
 prefix: BackPack

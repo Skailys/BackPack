@@ -6,7 +6,7 @@
 
     <groupId>de.fredie1104.projects</groupId>
     <artifactId>BackPacks</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
     <packaging>jar</packaging>
 
     <name>BackPacks</name>
