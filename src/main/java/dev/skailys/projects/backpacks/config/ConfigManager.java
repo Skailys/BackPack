@@ -34,9 +34,8 @@ public class ConfigManager {
 
     private static final String RESOURCE_NOT_FOUND = "Unable to load %s it will be initialize with a default value (%s)";
     private static final String RESOURCE_NOT_PARSED = "Unable to parse %s as %s it will be ignored";
-
-    private static BackPacks instance;
     private static final Logger log = BackPacks.getInstance().getLogger();
+    private static BackPacks instance;
     @Getter
     private static FileConfiguration config;
     @Getter

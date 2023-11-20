@@ -34,11 +34,16 @@ import java.util.Objects;
 public final class BackPacks extends JavaPlugin {
 
     private static final long DELAY = 0;
-    @Getter private static BackPacks instance;
-    @Getter private static BukkitScheduler scheduler;
-    @Getter private static Watchdog watchdog;
-    @Getter private static ModifyShulker modifyShulker;
-    @Getter private static FallbackListener fallback;
+    @Getter
+    private static BackPacks instance;
+    @Getter
+    private static BukkitScheduler scheduler;
+    @Getter
+    private static Watchdog watchdog;
+    @Getter
+    private static ModifyShulker modifyShulker;
+    @Getter
+    private static FallbackListener fallback;
 
     @Override
     public void onEnable() {

@@ -45,10 +45,14 @@ import java.util.*;
 
 public class ModifyShulker implements Listener {
 
-//    private final static int OFF_HAND_SLOT = 45;
+    //    private final static int OFF_HAND_SLOT = 45;
     private static final Set<Player> openedShulkers = new HashSet<>();
     private static final HashMap<Player, Long> playerCooldown = new HashMap<>();
     private static final Filtering forbidden = new Filtering();
+
+    public static Set<Player> getOpenedShulkers() {
+        return openedShulkers;
+    }
 
     private void filteringInventory(Inventory inventory, Player player) {
 
@@ -99,7 +103,7 @@ public class ModifyShulker implements Listener {
 
 
         if (playerCooldown.containsKey(p)) {
-            if(Instant.now().toEpochMilli() - playerCooldown.get(p) < (int) ConfigManager.get("backpack.usage.cooldown")) {
+            if (Instant.now().toEpochMilli() - playerCooldown.get(p) < (int) ConfigManager.get("backpack.usage.cooldown")) {
                 String warning = ConfigManager.getString("backpack.warn.cooldown");
                 p.sendActionBar(warning);
                 return;
@@ -344,10 +348,6 @@ public class ModifyShulker implements Listener {
     private String designate(String oldName) {
         String customName = ConfigManager.getCustomNameEntry(oldName);
         return (customName != null) ? customName : oldName;
-    }
-
-    public static Set<Player> getOpenedShulkers() {
-        return openedShulkers;
     }
 
 }
